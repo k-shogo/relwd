@@ -1,5 +1,7 @@
+require 'redis'
 require "relwd/version"
+require "relwd/config"
 
 module Relwd
-  # Your code goes here...
+  extend Config
 end
