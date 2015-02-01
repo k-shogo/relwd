@@ -34,10 +34,10 @@ module Relwd
         url = URI(@redis_url || ENV["REDIS_URL"] || "redis://127.0.0.1:6379/0")
 
         ::Redis.new({
-          :host => url.host,
-          :port => url.port,
-          :db => url.path[1..-1],
-          :password => url.password
+          host:     url.host,
+          port:     url.port,
+          db:       url.path[1..-1],
+          password: url.password
         })
       )
     end

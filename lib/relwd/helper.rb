@@ -9,19 +9,27 @@ module Relwd
     end
 
     def item_to_phrase item
-      ([item["term"]] + (item["aliases"] || [])).join(' ')
+      [item_term(item), *Array(item_aliases(item))].join(' ')
     end
 
     def item_validate item
-      raise ArgumentError, "Items must specify both an id and a term" unless item["id"] && item["term"]
+      raise ArgumentError, "Items must specify both an id and a term" unless item_id(item) && item_term(item)
     end
 
-    def item_id
-      item["id"]
+    def item_id item
+      item[:id] || item["id"]
     end
 
-    def item_score
-      item["score"]
+    def item_score item
+      item[:score] || item["score"]
+    end
+
+    def item_term item
+      item[:term] || item["term"]
+    end
+
+    def item_aliases item
+      item[:aliases] || item["aliases"]
     end
 
   end

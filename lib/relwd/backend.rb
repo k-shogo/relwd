@@ -17,7 +17,7 @@ module Relwd
       item_validate item
       id = item_id item
 
-      remove("id" => id) unless opts[:skip_duplicate_check]
+      remove(id: id) unless opts[:skip_duplicate_check]
 
       Relwd.redis.pipelined do
         Relwd.redis.hset(database, id, MultiJson.encode(item))
