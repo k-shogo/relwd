@@ -1,7 +1,7 @@
 module Relwd
   class Matcher < Base
 
-    def matches_for_term(term, options = {})
+    def matches(term, options = {})
       options = { limit: Relwd.match_limit, cache: true }.merge(options)
 
       words = term.split(' ').reject do |w|
