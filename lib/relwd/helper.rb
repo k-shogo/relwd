@@ -8,28 +8,28 @@ module Relwd
       end.flatten.uniq
     end
 
-    def item_to_phrase item
-      [item_term(item), *Array(item_aliases(item))].join(' ')
+    def document_to_phrase doc
+      [document_body(doc), *Array(document_aliases(doc))].join(' ')
     end
 
-    def item_validate item
-      raise ArgumentError, "Items must specify both an id and a term" unless item_id(item) && item_term(item)
+    def document_validate doc
+      raise ArgumentError, "documents must specify both an id and a body" unless document_id(doc) && document_body(doc)
     end
 
-    def item_id item
-      item[:id] || item["id"]
+    def document_id doc
+      doc[:id] || doc["id"]
     end
 
-    def item_score item
-      item[:score] || item["score"]
+    def document_score doc
+      doc[:score] || doc["score"]
     end
 
-    def item_term item
-      item[:term] || item["term"]
+    def document_body doc
+      doc[Relwd.document_key.to_sym] || doc[Relwd.document_key]
     end
 
-    def item_aliases item
-      item[:aliases] || item["aliases"]
+    def document_aliases doc
+      doc[:aliases] || doc["aliases"]
     end
 
   end
