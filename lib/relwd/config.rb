@@ -3,8 +3,9 @@ module Relwd
     DEFAULT_MIN_COMPLETE = 2
     DEFAULT_CACHE_EXPIRE = 600
     DEFAULT_MATCH_LIMIT  = 10
+    DEFAULT_DOCUMENT_KEY = :body
 
-    attr_writer :min_complete, :cache_expire, :match_limit
+    attr_writer :min_complete, :cache_expire, :match_limit, :document_key
 
     def min_complete
       @min_complete ||= DEFAULT_MIN_COMPLETE
@@ -16,6 +17,10 @@ module Relwd
 
     def match_limit
       @match_limit ||= DEFAULT_MATCH_LIMIT
+    end
+
+    def document_key
+      (@document_key ||= DEFAULT_DOCUMENT_KEY).to_s
     end
 
     def redis=(server)
