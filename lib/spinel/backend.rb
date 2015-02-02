@@ -1,4 +1,4 @@
-module Relwd
+module Spinel
   class Backend < Base
 
     def add(doc, opts = {})
@@ -8,22 +8,22 @@ module Relwd
 
       remove(id: id) unless opts[:skip_duplicate_check]
 
-      Relwd.redis.pipelined do
-        Relwd.redis.hset(database, id, MultiJson.encode(doc))
+      Spinel.redis.pipelined do
+        Spinel.redis.hset(database, id, MultiJson.encode(doc))
         prefixes_for_phrase(document_to_phrase(doc)).each do |p|
-          Relwd.redis.zadd(base_and(p), document_score(doc), id)
+          Spinel.redis.zadd(base_and(p), document_score(doc), id)
         end
       end
     end
 
     def remove(doc)
-      if prev_doc = Relwd.redis.hget(database, document_id(doc))
+      if prev_doc = Spinel.redis.hget(database, document_id(doc))
         prev_doc = MultiJson.decode(prev_doc)
         prev_id = document_id prev_doc
-        Relwd.redis.pipelined do
-          Relwd.redis.hdel(database, prev_id)
+        Spinel.redis.pipelined do
+          Spinel.redis.hdel(database, prev_id)
           prefixes_for_phrase(document_to_phrase(prev_doc)).each do |p|
-            Relwd.redis.zrem(base_and(p), prev_id)
+            Spinel.redis.zrem(base_and(p), prev_id)
           end
         end
       end

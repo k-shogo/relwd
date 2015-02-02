@@ -1,13 +1,13 @@
 require 'redis'
 require 'multi_json'
-require "relwd/version"
-require "relwd/config"
-require "relwd/helper"
-require "relwd/base"
-require "relwd/backend"
-require "relwd/matcher"
+require "spinel/version"
+require "spinel/config"
+require "spinel/helper"
+require "spinel/base"
+require "spinel/backend"
+require "spinel/matcher"
 
-module Relwd
+module Spinel
   extend Config
 
   def self.backend type = :default

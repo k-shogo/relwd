@@ -1,4 +1,4 @@
-module Relwd
+module Spinel
   module Config
     DEFAULT_MIN_COMPLETE = 2
     DEFAULT_CACHE_EXPIRE = 600

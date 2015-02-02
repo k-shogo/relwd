@@ -1,4 +1,4 @@
-module Relwd
+module Spinel
   class Base
     include Helper
 
@@ -9,7 +9,7 @@ module Relwd
     end
 
     def namespace
-      'relwd'
+      'spinel'
     end
 
     def base

@@ -1,10 +1,10 @@
-module Relwd
+module Spinel
   module Helper
 
     def prefixes_for_phrase(phrase)
       words = phrase.split(' ')
       words.map do |w|
-        (Relwd.min_complete-1..(w.length-1)).map{ |l| w[0..l] }
+        (Spinel.min_complete-1..(w.length-1)).map{ |l| w[0..l] }
       end.flatten.uniq
     end
 
@@ -25,7 +25,7 @@ module Relwd
     end
 
     def document_body doc
-      doc[Relwd.document_key.to_sym] || doc[Relwd.document_key]
+      doc[Spinel.document_key.to_sym] || doc[Spinel.document_key]
     end
 
     def document_aliases doc

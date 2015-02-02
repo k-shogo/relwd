@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'relwd/version'
+require 'spinel/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "relwd"
-  spec.version       = Relwd::VERSION
+  spec.name          = "spinel"
+  spec.version       = Spinel::VERSION
   spec.authors       = ["k-shogo"]
   spec.email         = ["platycod0n.ramosa@gmail.com"]
   spec.summary       = %q{suggest related words}

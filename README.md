@@ -1,13 +1,13 @@
-# Relwd
+# Spinel
 
-RelwdはRedisをバックエンドに用いた軽量なサジェストシステムです。
+SpinelはRedisをバックエンドに用いた軽量なサジェストシステムです。
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'relwd'
+gem 'spinel'
 ```
 
 And then execute:
@@ -19,7 +19,7 @@ $ bundle
 Or install it yourself as:
 
 ```shell
-$ gem install relwd
+$ gem install spinel
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ $ gem install relwd
 ### Configuration
 
 ```ruby
-Relwd.configure do |config|
+Spinel.configure do |config|
   config.redis = 'redis://127.0.0.1:6379/0'
   config.min_complete = 3
   config.cache_expire = 300
@@ -36,7 +36,7 @@ end
 
 ## Contributing
 
-1. Fork it ( https://github.com/k-shogo/relwd/fork )
+1. Fork it ( https://github.com/k-shogo/spinel/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
