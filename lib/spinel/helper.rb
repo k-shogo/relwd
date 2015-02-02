@@ -2,10 +2,13 @@ module Spinel
   module Helper
 
     def prefixes_for_phrase(phrase)
-      words = phrase.split(' ')
-      words.map do |w|
+      squish(phrase).split.flat_map do |w|
         (Spinel.min_complete-1..(w.length-1)).map{ |l| w[0..l] }
-      end.flatten.uniq
+      end.uniq
+    end
+
+    def squish str
+      str.to_s.gsub(/[[:space:]]+/, ' ').strip
     end
 
     def document_validate doc
