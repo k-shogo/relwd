@@ -52,6 +52,8 @@ backend.add id: 9, body: 'polish shoes to a bright shine'
 `score` がキー含まれていた場合は特別に処理されます。  
 `score`はドキュメントの優先度を指定できるキーであり、検索結果の順序に関係します。
 
+`id`, `body`, `score` 以外のキーには特殊な処理は行われません、JSONに変換された後、そのまま保存されます。
+
 ### 検索 / search
 
 ```ruby
@@ -108,7 +110,7 @@ matcher.matches 'ruby', cache: false, limit: 5
 #### 名前空間
 
 Spinelは複数階層の名前空間をサポートします。  
-通常 Redis には `spinel:index:default` のようなキーで行いますが、
+SpinelはRedisへのアクセスに `spinel:index:default` のようなキーを用います。  
 これを `#{spinel_namespaace}:index:#{index_type}` と見なしたとき、
 `#{spinel_namespaace}` 及び `#{index_type}` は変更可能です。
 
@@ -133,6 +135,101 @@ backend = Spinel.backend(:another_type)
 Spinelのバージョニングは[Semantic Versioning 2.0.0](http://semver.org/)に基づいて採番されます。  
 現在Spinelは開発初期段階です。  
 いつでも、いかなる変更も起こりうります。
+
+## どのように活用できるか
+
+例えばあなたが住所入力のフォームにインクリメンタルサーチを導入しようとしたとき、Spinelは良い選択肢になり得ます。
+以下では、[郵便番号データのダウンロード - zipcloud](http://zipcloud.ibsnet.co.jp/)の都道府県データを検索する例を示しています。
+
+この例では、Spinel以外に半角カタカナをひらがなに変換するために[gimite/moji](https://github.com/gimite/moji)ライブラリを使用しています。  
+インデキシングさせる情報(`body`キー)には、郵便番号、都道府県及び都道府県の読み仮名を含めており、
+データは12万5094件存在します。
+
+```ruby
+require 'spinel'
+require 'moji'
+require 'csv'
+
+header = [
+  :jis_x0401, # 全国地方公共団体コード
+  :old_code,  # (旧)郵便番号(5桁)
+  :code,      # 郵便番号(7桁)
+  :pref_kana, # 都道府県名カタカナ
+  :city_kana, # 市区町村名カタカナ
+  :town_kana, # 町域名カタカナ
+  :pref,      # 都道府県名
+  :city,      # 市区町村名
+  :town,      # 町域名
+  :flag1,     # 一町域が二以上の郵便番号で表される場合の表示
+  :flag2,     # 小字毎に番地が起番されている町域の表示
+  :flag3,     # 丁目を有する町域の場合の表示
+  :flag4,     # 一つの郵便番号で二以上の町域を表す場合の表示
+  :flag5,     # 更新の表示
+  :flag6      # 変更理由
+]
+
+import_data = []
+
+puts 'data converting...'
+t1 = Time.now
+CSV.foreach('x-ken-all.csv') do |row|
+  hash = header.zip(row).to_h
+  hash[:pref_kana] = Moji.kata_to_hira(Moji.han_to_zen(hash[:pref_kana]))
+  hash[:city_kana] = Moji.kata_to_hira(Moji.han_to_zen(hash[:city_kana]))
+  hash[:town_kana] = Moji.kata_to_hira(Moji.han_to_zen(hash[:town_kana]))
+  doc = {
+    id: hash[:code],
+    body: [hash[:code], hash[:pref], hash[:city], hash[:town], hash[:pref_kana], hash[:city_kana], hash[:town_kana]].join(' '),
+    raw_data: hash
+  }
+  import_data << doc
+end
+t2 = Time.now
+
+puts "convert done #{t2 - t1}s"
+puts "data importing..."
+
+backend = Spinel.backend
+import_data.each do |doc|
+  backend.add doc
+end
+
+t3 = Time.now
+puts "import done #{t3 - t2}s"
+
+# data converting...
+#   convert done 53.303588s
+# data importing...
+#   import done 188.305489s
+
+matcher = Spinel.matcer
+```
+
+MacBook Air(1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3) でデータを投入したとき、
+12万件のインポートに約3分かかりました。  
+検索には郵便番号、都道府県、読み仮名を組み合わせることが可能で、検索は非常に軽快です。
+
+```ruby
+> matcher.matches '014'
+=> [{"id"=>"0141413",
+  "body"=>"0141413 秋田県 大仙市 角間川町 あきたけん だいせんし かくまがわまち", ...
+
+> matcher.matches '014 ろくごう'
+=> [{"id"=>"0141411",
+  "body"=>"0141411 秋田県 大仙市 六郷西根 あきたけん だいせんし ろくごうにしね", ...
+
+> matcher.matches 'とうきょう'
+=> [{"id"=>"2080035",
+  "body"=>"2080035 東京都 武蔵村山市 中原 とうきょうと むさしむらやまし なかはら", ...
+
+> matcher.matches 'とうきょう しぶや'
+=> [{"id"=>"1510073",
+  "body"=>"1510073 東京都 渋谷区 笹塚 とうきょうと しぶやく ささづか", ...
+
+> matcher.matches 'とうきょう しぶや よよぎ'
+=> [{"id"=>"1510053",
+  "body"=>"1510053 東京都 渋谷区 代々木 とうきょうと しぶやく よよぎ", ...
+```
 
 ## Contributing
 
