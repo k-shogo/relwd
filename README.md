@@ -105,6 +105,29 @@ end
 matcher.matches 'ruby', cache: false, limit: 5
 ```
 
+#### 名前空間
+
+Spinelは複数階層の名前空間をサポートします。  
+通常 Redis には `spinel:index:default` のようなキーで行いますが、
+これを `#{spinel_namespaace}:index:#{index_type}` と見なしたとき、
+`#{spinel_namespaace}` 及び `#{index_type}` は変更可能です。
+
+上位の `#{spinel_namespaace}` は configure によって指定可能です。
+
+```
+Spinel.configure do |config|
+  config.namespace    = 'spinel'
+end
+```
+
+下位の `#{index_type}` はデータ登録時及び検索時に指定を変更することが可能です。
+
+```
+backend = Spinel.backend(:another_type)
+```
+
+`#{spinel_namespaace}` よりも上位で名前空間を分割したい場合には [resque/redis-namespace](https://github.com/resque/redis-namespace) を併用してください。
+
 ## バージョニング / Versioning
 
 Spinelのバージョニングは[Semantic Versioning 2.0.0](http://semver.org/)に基づいて採番されます。  
