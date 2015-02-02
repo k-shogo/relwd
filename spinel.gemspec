@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Spinel::VERSION
   spec.authors       = ["k-shogo"]
   spec.email         = ["platycod0n.ramosa@gmail.com"]
-  spec.summary       = %q{suggest related words}
-  spec.description   = %q{suggest related words}
+  spec.summary       = %q{lightweight text search system on Redis}
+  spec.description   = %q{lightweight text search system on Redis}
   spec.homepage      = ""
   spec.license       = "MIT"
 
