@@ -105,6 +105,11 @@ end
 matcher.matches 'ruby', cache: false, limit: 5
 ```
 
+## バージョニング / Versioning
+
+Spinelのバージョニングは[Semantic Versioning 2.0.0](http://semver.org/)に基づいて採番されます。  
+現在Spinelは開発初期段階です。  
+いつでも、いかなる変更も起こりうります。
 
 ## Contributing
 
