@@ -4,9 +4,7 @@ module Spinel
     def matches(term, options = {})
       options = { limit: Spinel.match_limit, cache: true }.merge(options)
 
-      words = term.split(' ').reject do |w|
-        w.size < Spinel.min_complete
-      end.sort
+      words = squish(term).split.reject{|w| w.size < Spinel.min_complete}.sort
 
       return [] if words.empty?
 
