@@ -1,7 +1,7 @@
 module Spinel
-  module Matcher
+  module Searcher
 
-    def matches(term, options = {})
+    def search term, options = {}
       options = { limit: Spinel.match_limit, cache: true }.merge(options)
 
       words = squish(term).split.reject{|w| w.size < Spinel.min_complete}.sort

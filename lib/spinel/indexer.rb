@@ -1,7 +1,7 @@
 module Spinel
-  module Backend
+  module Indexer
 
-    def add(doc, opts = {})
+    def store doc, opts = {}
       opts = { skip_duplicate_check: false }.merge(opts)
       document_validate doc
       id = document_id doc
@@ -22,7 +22,7 @@ module Spinel
       end
     end
 
-    def remove(doc)
+    def remove doc
       if prev_doc = Spinel.redis.hget(database, document_id(doc))
         prev_doc = MultiJson.decode(prev_doc)
         prev_id = document_id prev_doc

@@ -35,15 +35,15 @@ $ gem install spinel
 
 ```ruby
 spinel = Spinel.new
-spinel.add id: 1, body: 'and all with pearl and ruby glowing'
-spinel.add id: 2, body: 'a yellow or orange variety of ruby spinel'
-spinel.add id: 3, body: 'a colour called pearl yellow'
-spinel.add id: 4, body: 'a mandarin orange net sack'
-spinel.add id: 5, body: 'a spinel used as a gemstone usually dark red'
-spinel.add id: 6, body: 'today is hotter than usual'
-spinel.add id: 7, body: 'call on a person'
-spinel.add id: 8, body: 'that gem is shining'
-spinel.add id: 9, body: 'polish shoes to a bright shine'
+spinel.store id: 1, body: 'and all with pearl and ruby glowing'
+spinel.store id: 2, body: 'a yellow or orange variety of ruby spinel'
+spinel.store id: 3, body: 'a colour called pearl yellow'
+spinel.store id: 4, body: 'a mandarin orange net sack'
+spinel.store id: 5, body: 'a spinel used as a gemstone usually dark red'
+spinel.store id: 6, body: 'today is hotter than usual'
+spinel.store id: 7, body: 'call on a person'
+spinel.store id: 8, body: 'that gem is shining'
+spinel.store id: 9, body: 'polish shoes to a bright shine'
 ```
 
 データの登録時には最低限の要素として `id` 及び `body` が必要になります。  
@@ -58,9 +58,9 @@ spinel.add id: 9, body: 'polish shoes to a bright shine'
 
 ```ruby
 spinel = Spinel.new
-spinel.matches 'ruby'
+spinel.search 'ruby'
 # => [{"id"=>2, "body"=>"a yellow or orange variety of ruby spinel"}, {"id"=>1, "body"=>"and all with pearl and ruby glowing"}]
-spinel.matches 'usu'
+spinel.search 'usu'
 # => [{"id"=>6, "body"=>"today is hotter than usual"}, {"id"=>5, "body"=>"a spinel used as a gemstone usually dark red"}]
 ```
 
@@ -104,7 +104,7 @@ end
 キャッシュの使用と検索候補数は検索時にオプションとして値を指定することも可能です。
 
 ```ruby
-spinel.matches 'ruby', cache: false, limit: 5
+spinel.search 'ruby', cache: false, limit: 5
 ```
 
 #### 名前空間
@@ -191,7 +191,7 @@ puts "data importing..."
 
 spinel = Spinel.new
 import_data.each do |doc|
-  spinel.add doc
+  spinel.store doc
 end
 
 t3 = Time.now
@@ -208,15 +208,15 @@ MacBook Air(1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3) でデータを投入し�
 検索には郵便番号、都道府県、読み仮名を組み合わせることが可能で、検索は非常に軽快です。
 
 ```ruby
-> spinel.matches '014'
+> spinel.search '014'
 => [{"id"=>"0141413",
   "body"=>"0141413 秋田県 大仙市 角間川町 あきたけん だいせんし かくまがわまち", ...
 
-> spinel.matches '014 ろくごう'
+> spinel.search '014 ろくごう'
 => [{"id"=>"0141411",
   "body"=>"0141411 秋田県 大仙市 六郷西根 あきたけん だいせんし ろくごうにしね", ...
 
-> spinel.matches 'とうき'
+> spinel.search 'とうき'
 => [
   {"id"=>"5998242",
   "body"=>"5998242 大阪府 堺市中区 陶器北 おおさかふ さかいしなかく とうききた", ...
@@ -225,15 +225,15 @@ MacBook Air(1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3) でデータを投入し�
   {"id"=>"2080035",
   "body"=>"2080035 東京都 武蔵村山市 中原 とうきょうと むさしむらやまし なかはら", ...
 
-> spinel.matches 'とうきょう'
+> spinel.search 'とうきょう'
 => [{"id"=>"2080035",
   "body"=>"2080035 東京都 武蔵村山市 中原 とうきょうと むさしむらやまし なかはら", ...
 
-> spinel.matches 'とうきょう しぶや'
+> spinel.search 'とうきょう しぶや'
 => [{"id"=>"1510073",
   "body"=>"1510073 東京都 渋谷区 笹塚 とうきょうと しぶやく ささづか", ...
 
-> spinel.matches 'とうきょう しぶや よよぎ'
+> spinel.search 'とうきょう しぶや よよぎ'
 => [{"id"=>"1510053",
   "body"=>"1510053 東京都 渋谷区 代々木 とうきょうと しぶやく よよぎ", ...
 ```

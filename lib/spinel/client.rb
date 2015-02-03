@@ -1,8 +1,8 @@
 module Spinel
   class Client
     include Helper
-    include Backend
-    include Matcher
+    include Indexer
+    include Searcher
 
     attr_accessor :type
 
