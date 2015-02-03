@@ -10,7 +10,7 @@ module Spinel
       tmp_cachekey = cachekey(words)
 
       unless options[:cache] && Spinel.redis.exists(tmp_cachekey)
-        interkeys = words.map{ |w| base_and w }
+        interkeys = words.map{ |w| index w }
         Spinel.redis.zinterstore(tmp_cachekey, interkeys)
         Spinel.redis.expire(tmp_cachekey, Spinel.cache_expire)
       end

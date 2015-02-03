@@ -10,24 +10,16 @@ module Spinel
       @type = type
     end
 
-    def base
-      "#{Spinel.namespace}:index:#{type}"
-    end
-
-    def base_and p
-      "#{base}:#{p}"
+    def index p
+      "#{Spinel.namespace}:index:#{type}:#{p}"
     end
 
     def database
       "#{Spinel.namespace}:data:#{type}"
     end
 
-    def cachebase
-      "#{Spinel.namespace}:cache:#{type}"
-    end
-
     def cachekey words
-      "#{cachebase}:#{words.join('|')}"
+      "#{Spinel.namespace}:cache:#{type}:#{words.join('|')}"
     end
   end
 end

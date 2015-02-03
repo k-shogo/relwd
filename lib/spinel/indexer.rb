@@ -11,7 +11,7 @@ module Spinel
       Spinel.redis.pipelined do
         Spinel.redis.hset(database, id, MultiJson.encode(doc))
         prefixes_for_phrase(document_body(doc)).each do |p|
-          Spinel.redis.zadd(base_and(p), document_score(doc), id)
+          Spinel.redis.zadd(index(p), document_score(doc), id)
         end
       end
     end
@@ -29,7 +29,7 @@ module Spinel
         Spinel.redis.pipelined do
           Spinel.redis.hdel(database, prev_id)
           prefixes_for_phrase(document_body(prev_doc)).each do |p|
-            Spinel.redis.zrem(base_and(p), prev_id)
+            Spinel.redis.zrem(index(p), prev_id)
           end
         end
       end
