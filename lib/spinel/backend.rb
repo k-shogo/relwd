@@ -1,5 +1,5 @@
 module Spinel
-  class Backend < Base
+  module Backend
 
     def add(doc, opts = {})
       opts = { skip_duplicate_check: false }.merge(opts)

@@ -1,5 +1,5 @@
 module Spinel
-  class Matcher < Base
+  module Matcher
 
     def matches(term, options = {})
       options = { limit: Spinel.match_limit, cache: true }.merge(options)
