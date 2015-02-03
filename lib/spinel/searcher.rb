@@ -2,9 +2,9 @@ module Spinel
   module Searcher
 
     def search term, options = {}
-      options = { limit: Spinel.match_limit, cache: true }.merge(options)
+      options = { limit: Spinel.minimal_word, cache: true }.merge(options)
 
-      words = squish(term).split.reject{|w| w.size < Spinel.min_complete}.sort
+      words = squish(term).split.reject{|w| w.size < Spinel.minimal_word}.sort
       return [] if words.empty?
 
       tmp_cachekey = cachekey(words)

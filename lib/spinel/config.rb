@@ -1,23 +1,23 @@
 module Spinel
   module Config
-    DEFAULT_MIN_COMPLETE = 2
+    DEFAULT_MINIMAL_WORD = 2
     DEFAULT_CACHE_EXPIRE = 600
-    DEFAULT_MATCH_LIMIT  = 10
+    DEFAULT_SEARCH_LIMIT = 10
     DEFAULT_DOCUMENT_KEY = :body
     DEFAULT_NAMESPACE    = 'spinel'
 
-    attr_writer :min_complete, :cache_expire, :match_limit, :document_key, :namespace
+    attr_writer :minimal_word, :cache_expire, :search_limit, :document_key, :namespace
 
-    def min_complete
-      @min_complete ||= DEFAULT_MIN_COMPLETE
+    def minimal_word
+      @minimal_word ||= DEFAULT_MINIMAL_WORD
     end
 
     def cache_expire
       @cache_expire ||= DEFAULT_CACHE_EXPIRE
     end
 
-    def match_limit
-      @match_limit ||= DEFAULT_MATCH_LIMIT
+    def search_limit
+      @search_limit ||= DEFAULT_SEARCH_LIMIT
     end
 
     def document_key
@@ -35,7 +35,6 @@ module Spinel
       else
         @redis = server
       end
-
       redis
     end
 

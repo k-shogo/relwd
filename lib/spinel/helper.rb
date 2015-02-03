@@ -3,7 +3,7 @@ module Spinel
 
     def prefixes str
       squish(str).split.flat_map do |w|
-        (Spinel.min_complete-1..(w.length-1)).map{ |l| w[0..l] }
+        (Spinel.minimal_word-1..(w.length-1)).map{ |l| w[0..l] }
       end.uniq
     end
 
@@ -11,8 +11,12 @@ module Spinel
       str.to_s.gsub(/[[:space:]]+/, ' ').strip
     end
 
-    def document_validate doc
-      raise ArgumentError, "documents must specify both an id and a body" unless document_id(doc) && document_body(doc)
+    def get_valid_document doc
+      id    = document_id    doc
+      body  = document_body  doc
+      score = document_score doc
+      raise ArgumentError, "documents must specify both an id and a body" unless id && body
+      [id, body, score]
     end
 
     def document_id doc

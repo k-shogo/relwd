@@ -3,17 +3,17 @@ module Spinel
 
     def store doc, opts = {}
       opts = { skip_duplicate_check: false }.merge(opts)
-      document_validate doc
-      id = document_id doc
+      id, body, score = get_valid_document doc
 
       remove(id: id) unless opts[:skip_duplicate_check]
 
       Spinel.redis.pipelined do
         Spinel.redis.hset(database, id, MultiJson.encode(doc))
-        prefixes(document_body(doc)).each do |p|
-          Spinel.redis.zadd(index(p), document_score(doc), id)
+        prefixes(body).each do |p|
+          Spinel.redis.zadd(index(p), score, id)
         end
       end
+      doc
     end
 
     def get id

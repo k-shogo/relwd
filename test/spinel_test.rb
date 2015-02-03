@@ -25,9 +25,10 @@ class SpinelTest < Minitest::Test
     assert { "quick brown fox" == @spinel.squish("  quick \t  brown\n fox  ") }
   end
 
-  def test_document_validate
-    assert_raises(ArgumentError){ @spinel.document_validate({id: 1}) }
-    assert_raises(ArgumentError){ @spinel.document_validate({body: 'body'}) }
+  def test_get_valid_document
+    assert_raises(ArgumentError){ @spinel.get_valid_document({id: 1}) }
+    assert_raises(ArgumentError){ @spinel.get_valid_document({body: 'body'}) }
+    assert { [1, 'body', 0.0] == @spinel.get_valid_document({id: 1, body: 'body'}) }
   end
 
   def test_document_id

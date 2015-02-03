@@ -72,9 +72,9 @@ spinel.search 'usu'
 ```ruby
 Spinel.configure do |config|
   config.redis        = 'redis://127.0.0.1:6379/0'
-  config.min_complete = 2
+  config.minimal_word = 2
   config.cache_expire = 600
-  config.match_limit  = 10
+  config.search_limit = 10
   config.document_key = :body
   config.namespace    = 'spinel'
 end
