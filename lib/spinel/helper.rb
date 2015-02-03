@@ -1,8 +1,8 @@
 module Spinel
   module Helper
 
-    def prefixes_for_phrase(phrase)
-      squish(phrase).split.flat_map do |w|
+    def prefixes str
+      squish(str).split.flat_map do |w|
         (Spinel.min_complete-1..(w.length-1)).map{ |l| w[0..l] }
       end.uniq
     end
@@ -20,7 +20,7 @@ module Spinel
     end
 
     def document_score doc
-      doc[:score] || doc["score"]
+      (doc[:score] || doc["score"]).to_f
     end
 
     def document_body doc
