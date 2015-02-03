@@ -34,16 +34,16 @@ $ gem install spinel
 ### データ登録 / registration
 
 ```ruby
-backend = Spinel.backend
-backend.add id: 1, body: 'and all with pearl and ruby glowing'
-backend.add id: 2, body: 'a yellow or orange variety of ruby spinel'
-backend.add id: 3, body: 'a colour called pearl yellow'
-backend.add id: 4, body: 'a mandarin orange net sack'
-backend.add id: 5, body: 'a spinel used as a gemstone usually dark red'
-backend.add id: 6, body: 'today is hotter than usual'
-backend.add id: 7, body: 'call on a person'
-backend.add id: 8, body: 'that gem is shining'
-backend.add id: 9, body: 'polish shoes to a bright shine'
+spinel = Spinel.new
+spinel.add id: 1, body: 'and all with pearl and ruby glowing'
+spinel.add id: 2, body: 'a yellow or orange variety of ruby spinel'
+spinel.add id: 3, body: 'a colour called pearl yellow'
+spinel.add id: 4, body: 'a mandarin orange net sack'
+spinel.add id: 5, body: 'a spinel used as a gemstone usually dark red'
+spinel.add id: 6, body: 'today is hotter than usual'
+spinel.add id: 7, body: 'call on a person'
+spinel.add id: 8, body: 'that gem is shining'
+spinel.add id: 9, body: 'polish shoes to a bright shine'
 ```
 
 データの登録時には最低限の要素として `id` 及び `body` が必要になります。  
@@ -57,10 +57,10 @@ backend.add id: 9, body: 'polish shoes to a bright shine'
 ### 検索 / search
 
 ```ruby
-matcher = Spinel.matcher
-matcher.matches 'ruby'
+spinel = Spinel.new
+spinel.matches 'ruby'
 # => [{"id"=>2, "body"=>"a yellow or orange variety of ruby spinel"}, {"id"=>1, "body"=>"and all with pearl and ruby glowing"}]
-matcher.matches 'usu'
+spinel.matches 'usu'
 # => [{"id"=>6, "body"=>"today is hotter than usual"}, {"id"=>5, "body"=>"a spinel used as a gemstone usually dark red"}]
 ```
 
@@ -104,7 +104,7 @@ end
 キャッシュの使用と検索候補数は検索時にオプションとして値を指定することも可能です。
 
 ```ruby
-matcher.matches 'ruby', cache: false, limit: 5
+spinel.matches 'ruby', cache: false, limit: 5
 ```
 
 #### 名前空間
@@ -125,7 +125,7 @@ end
 下位の `#{index_type}` はデータ登録時及び検索時に指定を変更することが可能です。
 
 ```
-backend = Spinel.backend(:another_type)
+spinel = Spinel.new(:another_type)
 ```
 
 `#{spinel_namespaace}` よりも上位で名前空間を分割したい場合には [resque/redis-namespace](https://github.com/resque/redis-namespace) を併用してください。
@@ -189,9 +189,9 @@ t2 = Time.now
 puts "convert done #{t2 - t1}s"
 puts "data importing..."
 
-backend = Spinel.backend
+spinel = Spinel.new
 import_data.each do |doc|
-  backend.add doc
+  spinel.add doc
 end
 
 t3 = Time.now
@@ -201,8 +201,6 @@ puts "import done #{t3 - t2}s"
 #   convert done 53.303588s
 # data importing...
 #   import done 188.305489s
-
-matcher = Spinel.matcer
 ```
 
 MacBook Air(1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3) でデータを投入したとき、
@@ -210,15 +208,15 @@ MacBook Air(1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3) でデータを投入し�
 検索には郵便番号、都道府県、読み仮名を組み合わせることが可能で、検索は非常に軽快です。
 
 ```ruby
-> matcher.matches '014'
+> spinel.matches '014'
 => [{"id"=>"0141413",
   "body"=>"0141413 秋田県 大仙市 角間川町 あきたけん だいせんし かくまがわまち", ...
 
-> matcher.matches '014 ろくごう'
+> spinel.matches '014 ろくごう'
 => [{"id"=>"0141411",
   "body"=>"0141411 秋田県 大仙市 六郷西根 あきたけん だいせんし ろくごうにしね", ...
 
-> matcher.matches 'とうき'
+> spinel.matches 'とうき'
 => [
   {"id"=>"5998242",
   "body"=>"5998242 大阪府 堺市中区 陶器北 おおさかふ さかいしなかく とうききた", ...
@@ -227,15 +225,15 @@ MacBook Air(1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3) でデータを投入し�
   {"id"=>"2080035",
   "body"=>"2080035 東京都 武蔵村山市 中原 とうきょうと むさしむらやまし なかはら", ...
 
-> matcher.matches 'とうきょう'
+> spinel.matches 'とうきょう'
 => [{"id"=>"2080035",
   "body"=>"2080035 東京都 武蔵村山市 中原 とうきょうと むさしむらやまし なかはら", ...
 
-> matcher.matches 'とうきょう しぶや'
+> spinel.matches 'とうきょう しぶや'
 => [{"id"=>"1510073",
   "body"=>"1510073 東京都 渋谷区 笹塚 とうきょうと しぶやく ささづか", ...
 
-> matcher.matches 'とうきょう しぶや よよぎ'
+> spinel.matches 'とうきょう しぶや よよぎ'
 => [{"id"=>"1510053",
   "body"=>"1510053 東京都 渋谷区 代々木 とうきょうと しぶやく よよぎ", ...
 ```
