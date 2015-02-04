@@ -11,9 +11,9 @@ require 'minitest-power_assert'
 
 Spinel.configure do |config|
   config.redis        = MockRedis.new
-  config.min_complete = 2
+  config.minimal_word = 2
   config.cache_expire = 600
-  config.match_limit  = 10
+  config.search_limit = 10
   config.document_key = :body
   config.namespace    = 'spinel'
 end
