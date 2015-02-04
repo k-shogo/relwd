@@ -5,6 +5,30 @@ class SpinelTest < Minitest::Test
     @spinel = Spinel.new
   end
 
+  def test_redis
+    assert { 'PONG' == Spinel.redis.ping }
+
+    Spinel.redis = 'redis://127.0.0.1:6379/0'
+    assert { 'PONG' == Spinel.redis.ping }
+
+    mock_redis = MockRedis.new
+    Spinel.redis = mock_redis
+    assert { mock_redis.object_id == Spinel.redis.object_id }
+  end
+
+  def test_respond_to?
+   assert Spinel.respond_to? :store
+   assert Spinel.respond_to? :remove
+   assert Spinel.respond_to? :get
+   assert Spinel.respond_to? :search
+  end
+
+  def test_method_missing
+    Spinel.redis.flushall
+    Spinel.store({id: 1, body: 'test'},{})
+    assert { 1 == Spinel.redis.hlen(@spinel.database) }
+  end
+
   def test_database_index
     assert { 'spinel:data:default' == @spinel.database }
   end
