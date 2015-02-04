@@ -1,7 +1,10 @@
+require 'dotenv'
 require "codeclimate-test-reporter"
+require 'simplecov'
+
+Dotenv.load
 CodeClimate::TestReporter.start
 
-require 'simplecov'
 SimpleCov.start do
   add_filter "vendor"
 end
