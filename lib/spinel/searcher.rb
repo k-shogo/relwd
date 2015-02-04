@@ -15,7 +15,7 @@ module Spinel
     end
 
     def search_option options = {}
-      { limit: Spinel.minimal_word, cache: true }.merge(options)
+      { limit: Spinel.search_limit, cache: true }.merge(options)
     end
 
     def search_word_split word
