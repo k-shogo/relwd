@@ -1,7 +1,11 @@
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
 require 'simplecov'
 SimpleCov.start do
   add_filter "vendor"
 end
+
 
 require 'spinel'
 require 'mock_redis'

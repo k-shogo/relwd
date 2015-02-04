@@ -1,5 +1,9 @@
 # Spinel
 
+[![Gem Version](https://badge.fury.io/rb/spinel.svg)](http://badge.fury.io/rb/spinel)
+[![Code Climate](https://codeclimate.com/github/k-shogo/spinel/badges/gpa.svg)](https://codeclimate.com/github/k-shogo/spinel)
+[![Test Coverage](https://codeclimate.com/github/k-shogo/spinel/badges/coverage.svg)](https://codeclimate.com/github/k-shogo/spinel)
+
 Spinel is Redis based lightweight text search engine.  
 SpinelはRedisをバックエンドに用いた軽量なテキスト検索システムです。
 

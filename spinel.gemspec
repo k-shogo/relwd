@@ -26,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", ">= 5.4"
   spec.add_development_dependency "minitest-power_assert"
   spec.add_development_dependency "simplecov"
+  spec.add_development_dependency "codeclimate-test-reporter"
   spec.add_development_dependency "mock_redis"
 end
