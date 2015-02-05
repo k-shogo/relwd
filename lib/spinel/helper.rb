@@ -12,11 +12,9 @@ module Spinel
     end
 
     def get_valid_document doc
-      id    = document_id    doc
-      body  = document_body  doc
-      score = document_score doc
-      raise ArgumentError, "documents must specify both an id and a body" unless id && body
-      [id, body, score]
+      id = document_id doc
+      raise ArgumentError, "documents must specify id" unless id
+      [id, document_index_fields(doc), document_score(doc)]
     end
 
     def document_id doc
@@ -27,8 +25,10 @@ module Spinel
       (doc[:score] || doc["score"]).to_f
     end
 
-    def document_body doc
-      doc[Spinel.document_key.to_sym] || doc[Spinel.document_key]
+    def document_index_fields doc
+      Spinel.index_fields.map {|field|
+        doc[field.to_s.to_sym] || doc[field.to_s] || doc[field]
+      }.compact.join(' ')
     end
 
   end

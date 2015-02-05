@@ -20,8 +20,15 @@ Spinel.configure do |config|
   config.minimal_word = 2
   config.cache_expire = 600
   config.search_limit = 10
-  config.document_key = :body
+  config.index_fields = :body
   config.namespace    = 'spinel'
+end
+
+
+class SpinelTestBase < Minitest::Test
+  def setup
+    @spinel = Spinel.new
+  end
 end
 
 def test_data

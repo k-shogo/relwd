@@ -28,7 +28,7 @@ module Spinel
         prev_id = document_id prev_doc
         Spinel.redis.pipelined do
           Spinel.redis.hdel(database, prev_id)
-          prefixes(document_body(prev_doc)).each do |p|
+          prefixes(document_index_fields(prev_doc)).each do |p|
             Spinel.redis.zrem(index(p), prev_id)
           end
         end

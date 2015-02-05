@@ -3,10 +3,10 @@ module Spinel
     DEFAULT_MINIMAL_WORD = 2
     DEFAULT_CACHE_EXPIRE = 600
     DEFAULT_SEARCH_LIMIT = 10
-    DEFAULT_DOCUMENT_KEY = :body
+    DEFAULT_INDEX_FIELDS = [:body]
     DEFAULT_NAMESPACE    = 'spinel'
 
-    attr_writer :minimal_word, :cache_expire, :search_limit, :document_key, :namespace
+    attr_writer :minimal_word, :cache_expire, :search_limit, :index_fields, :namespace
 
     def minimal_word
       @minimal_word ||= DEFAULT_MINIMAL_WORD
@@ -20,8 +20,8 @@ module Spinel
       @search_limit ||= DEFAULT_SEARCH_LIMIT
     end
 
-    def document_key
-      (@document_key ||= DEFAULT_DOCUMENT_KEY).to_s
+    def index_fields
+      Array(@index_fields ||= DEFAULT_INDEX_FIELDS)
     end
 
     def namespace
