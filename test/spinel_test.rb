@@ -5,9 +5,6 @@ class SpinelTest < SpinelTestBase
   def test_redis
     assert { 'PONG' == Spinel.redis.ping }
 
-    Spinel.redis = 'redis://127.0.0.1:6379/0'
-    assert { 'PONG' == Spinel.redis.ping }
-
     mock_redis = MockRedis.new
     Spinel.redis = mock_redis
     assert { mock_redis.object_id == Spinel.redis.object_id }

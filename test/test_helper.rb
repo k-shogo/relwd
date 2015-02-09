@@ -7,10 +7,12 @@ CodeClimate::TestReporter.start if ENV['CCR']
 
 SimpleCov.start do
   add_filter "vendor"
+  add_filter "test"
 end
 
 require 'spinel'
 require 'mock_redis'
+require 'connection_pool'
 require 'minitest/autorun'
 require 'minitest/unit'
 require 'minitest-power_assert'

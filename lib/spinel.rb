@@ -5,6 +5,7 @@ require "spinel/config"
 require "spinel/helper"
 require "spinel/indexer"
 require "spinel/searcher"
+require "spinel/connection_pool_proxy"
 require "spinel/client"
 
 module Spinel

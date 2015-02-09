@@ -88,15 +88,22 @@ end
 
 デフォルトでは `redis://127.0.0.1:6379/0` に接続しようとします。  
 環境変数に `REDIS_URL` が存在するとき、`redis://127.0.0.1:6379/0` よりも優先してその値を使おうとします。  
-明示的な設定が行われた場合には環境変数よりも設定が優先されます。
+また`Redis.current`で指定することも可能です。
 
-明示的な設定において文字列が与えられた場合には、文字列をパースしてredisの接続を作成します。  
-[resque/redis-namespace](https://github.com/resque/redis-namespace)等を使いたい場合には、直接指定することも可能です。
+```
+Redis.current = Redis.new(host: '127.0.0.1', port: 6379, db: 15)
+```
+
+[resque/redis-namespace](https://github.com/resque/redis-namespace)や、[mperham/connection_pool](https://github.com/mperham/connection_pool)等を使いたい場合には直接指定することも可能です。
 
 ```ruby
-Spinel.configure do |config|
-  config.redis = Redis::Namespace.new(:ns, redis: Redis.new)
-end
+require 'redis-namespace'
+Spinel.redis = Redis::Namespace.new(:ns, redis: Redis.new)
+```
+
+```
+require 'connection_pool'
+Spinel.redis = ConnectionPool.new(size: 5, timeout: 5) { Redis.new(host: '127.0.0.1', port: 6379) }
 ```
 
 #### 検索結果のキャッシュ / 候補数
