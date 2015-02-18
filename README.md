@@ -71,15 +71,14 @@ spinel.search 'usu'
 ### 設定 / Configuration
 
 設定はブロックにより行うことが出来ます。  
-以下の例で示されているデフォルト値で運用する場合には設定は必要ありません。
 
 ```ruby
 Spinel.configure do |config|
-  config.redis        = 'redis://127.0.0.1:6379/0'
+  config.redis        = Redis.new(host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'], db: ENV['REDIS_DB'])
   config.minimal_word = 2
   config.cache_expire = 600
   config.search_limit = 10
-  config.index_fields = :body
+  config.index_fields = [:body, :alias]
   config.namespace    = 'spinel'
 end
 ```
@@ -90,7 +89,7 @@ end
 環境変数に `REDIS_URL` が存在するとき、`redis://127.0.0.1:6379/0` よりも優先してその値を使おうとします。  
 また`Redis.current`で指定することも可能です。
 
-```
+```ruby
 Redis.current = Redis.new(host: '127.0.0.1', port: 6379, db: 15)
 ```
 
@@ -101,7 +100,7 @@ require 'redis-namespace'
 Spinel.redis = Redis::Namespace.new(:ns, redis: Redis.new)
 ```
 
-```
+```ruby
 require 'connection_pool'
 Spinel.redis = ConnectionPool.new(size: 5, timeout: 5) { Redis.new(host: '127.0.0.1', port: 6379) }
 ```
@@ -127,7 +126,7 @@ SpinelはRedisへのアクセスに `spinel:index:default` のようなキーを
 
 上位の `#{spinel_namespaace}` は configure によって指定可能です。
 
-```
+```ruby
 Spinel.configure do |config|
   config.namespace    = 'spinel'
 end
@@ -135,7 +134,7 @@ end
 
 下位の `#{index_type}` はデータ登録時及び検索時に指定を変更することが可能です。
 
-```
+```ruby
 spinel = Spinel.new(:another_type)
 ```
 
